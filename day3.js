@@ -326,6 +326,51 @@ const input = `....#.#..#.#.#.#......#....##.#
 .#.#.#.##......#......#....#.#.
 .##...##....#...#....#..###.#.#`
 
-const arr = input.split('\n')
+const map = input.split('\n')
 
-console.log(input)
+class Slope {
+    constructor(map) {
+        this.map = map
+    }
+
+    getPosition(x, y) {
+        return this.map[y][x % this.map[0].length]
+    }
+
+    getHeight() {
+        return this.map.length
+    }
+
+}
+
+const slope = new Slope(map.map(line => [...line]))
+
+function tobogganTravel(slope, dx, dy) {
+    let x = 0
+    let y = 0
+    let trees = 0
+
+    while(y < slope.getHeight()) {
+        const current = slope.getPosition(x, y)
+
+        if (current === '#') trees++
+        x += dx
+        y += dy
+    }
+
+    return trees
+}
+
+console.log(`The aswer is: ${tobogganTravel(slope, 3, 1)}`)
+
+// PART TWO
+
+const tries = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]]
+
+let total = 1
+
+for (const iterator of tries) {
+    total *= tobogganTravel(slope, ...iterator)
+}
+
+console.log(`The aswer is: ${total}`)
